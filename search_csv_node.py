@@ -11,7 +11,7 @@ class search_csv:
             "required": {
                 "Path": ("STRING", {"default":""}),	
             	"Keyword": ("STRING", {"default":""}),		
-                "Column": ("INT"),
+                "Column": ("INT", {"default": 1, "min": 1, "max": 100}),
             },
         }
 
