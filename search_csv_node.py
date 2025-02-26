@@ -30,7 +30,7 @@ class search_csv:
         # Read CSV file
         try:
             with open(Path, mode='r', newline='', encoding='utf-8') as csvfile:
-                reader = list(csv.reader(csvfile, delimiter=';'))  # Convert to list to access by index
+                reader = list(csv.reader(csvfile, delimiter=','))  # Convert to list to access by index
 
                 if Row >= len(reader):  # Check if row exists
                     return (f"Error: Row {Row} does not exist in the file.",)
