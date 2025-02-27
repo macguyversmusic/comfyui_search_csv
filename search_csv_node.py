@@ -9,7 +9,7 @@ class search_csv:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "Path": ("STRING", {"default": "", "multiline": False}),  
+                "Filename": ("STRING", {"default": "", "multiline": False}),  # User provides only the filename
                 "Row": ("INT", {"default": 0, "min": 0, "max": 10000}),  # User selects row number
                 "Column": ("INT", {"default": 1, "min": 1, "max": 100}),  # User selects column number
             },
@@ -22,7 +22,10 @@ class search_csv:
 
     CATEGORY = "utils/search_csv"
 
-    def search_csv(self, Path, Row, Column):
+    def search_csv(self, Filename, Row, Column):
+        # Force the file path to always be in /comfyui/input/
+        Path = os.path.join("/comfyui/input", Filename)
+
         # Check if file exists
         if not os.path.exists(Path):
             return (f"Error: The file {Path} does not exist.",)
