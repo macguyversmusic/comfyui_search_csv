@@ -7,9 +7,13 @@ class search_csv:
     
     @classmethod
     def INPUT_TYPES(cls):
+        # Get all CSV files from /comfyui/input
+        input_dir = "/comfyui/input"
+        csv_files = [f for f in os.listdir(input_dir) if f.endswith(".csv")] if os.path.exists(input_dir) else []
+
         return {
             "required": {
-                "Filename": ("STRING", {"default": "", "multiline": False}),  # User provides only the filename
+                "Filename": (csv_files, {"default": csv_files[0] if csv_files else ""}),  # Dropdown with CSV files
                 "Row": ("INT", {"default": 0, "min": 0, "max": 10000}),  # User selects row number
                 "Column": ("INT", {"default": 1, "min": 1, "max": 100}),  # User selects column number
             },
