@@ -10,8 +10,8 @@ class search_csv:
         return {
             "required": {
                 "Path": ("STRING", {"default": "", "multiline": False}),  
-                "Row": ("INT", {"default": 0, "min": 0, "max": 10000}),  # User selects row number
-                "Column": ("INT", {"default": 1, "min": 1, "max": 100}),  # User selects column number
+                "Row": ("INT", {"default": 1, "min": 1, "max": 10000}),  # User selects row number (Office-style)
+                "Column": ("INT", {"default": 1, "min": 1, "max": 100}),  # User selects column number (Office-style)
             },
         }
 
@@ -23,6 +23,10 @@ class search_csv:
     CATEGORY = "utils/search_csv"
 
     def search_csv(self, Path, Row, Column):
+        # Convert Office row/column numbering to zero-based index
+        row_index = Row - 1
+        col_index = Column - 1
+
         # Check if file exists
         if not os.path.exists(Path):
             return (f"Error: The file {Path} does not exist.",)
@@ -32,13 +36,13 @@ class search_csv:
             with open(Path, mode='r', newline='', encoding='utf-8') as csvfile:
                 reader = list(csv.reader(csvfile, delimiter=';'))  # Convert to list to access by index
 
-                if Row >= len(reader):  # Check if row exists
+                if row_index >= len(reader):  # Check if row exists
                     return (f"Error: Row {Row} does not exist in the file.",)
 
-                if Column >= len(reader[Row]):  # Check if column exists in the row
+                if col_index >= len(reader[row_index]):  # Check if column exists in the row
                     return (f"Error: Column {Column} does not exist in row {Row}.",)
 
-                return (str(reader[Row][Column]),)
+                return (str(reader[row_index][col_index]),)
 
         except Exception as e:
             return (f"Error reading CSV: {str(e)}",)
